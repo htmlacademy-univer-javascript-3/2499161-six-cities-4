@@ -6,12 +6,12 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-enum Setting {
+enum Settings {
   cardsNumber = 300
 }
 
 root.render(
   <React.StrictMode>
-    <App cardsNumber = {Setting.cardsNumber}/>
+    <App cardsNumber = {Settings.cardsNumber}/>
   </React.StrictMode>
 );
