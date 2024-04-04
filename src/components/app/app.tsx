@@ -6,34 +6,43 @@ import LoginScreen from '../pages/login-screen/login-screen';
 import NotFoundScreen from '../pages/not-found-screen/not-found-screen';
 import OfferScreen from '../pages/offer/offer-screen';
 import PrivateRoute from '../private-route/private-route';
+import { Offer } from '../../types/offer';
 
-export default function App({cardsNumber}: {cardsNumber: number}): JSX.Element {
+
+type AppPageProps = {
+  cardsNumber: number;
+  offers: Offer[];
+};
+
+export default function App({cardsNumber, offers} : AppPageProps) : JSX.Element {
+  const favorites = offers.filter((offer) => offer.isFavorite);
+
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainScreen cardsNumber={cardsNumber}/>}
+          element={<MainScreen cardsNumber={cardsNumber} offers={offers} />}
         />
         <Route
           path={AppRoute.Login}
-          element={<LoginScreen/>}
+          element={<LoginScreen />}
         />
         <Route
           path={AppRoute.Favorites}
           element={
-            <PrivateRoute status={Status.NoAuth}>
-              <FavoritesScreen/>
+            <PrivateRoute status={Status.Auth}>
+              <FavoritesScreen favorites={favorites}/>
             </PrivateRoute>
           }
         />
         <Route
           path={AppRoute.Offer}
-          element={<OfferScreen/>}
+          element={<OfferScreen />}
         />
         <Route
           path="*"
-          element={<NotFoundScreen/>}
+          element={<NotFoundScreen />}
         />
       </Routes>
     </BrowserRouter>
