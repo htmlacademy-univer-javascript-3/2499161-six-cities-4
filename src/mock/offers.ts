@@ -9,7 +9,14 @@ export const offers: Offer[] = [
     'isFavorite': true,
     'type': 'Apartment',
     'rating': 4.8,
-    'city': { 'name': 'Amsterdam' },
+    'city': {
+      'name': 'Amsterdam',
+      'location': {
+        'latitude': 52.3909553943508,
+        'longitude': 4.85309666406198,
+        'zoom': 8
+      }
+    },
     'numOfBedrooms': 3,
     'numOfGuests': 4,
     'price': 120,
@@ -23,7 +30,14 @@ export const offers: Offer[] = [
     'isFavorite': false,
     'type': 'Room',
     'rating': 3,
-    'city': { 'name': 'Amsterdam' },
+    'city': {
+      'name': 'Amsterdam',
+      'location': {
+        'latitude': 52.3609553943508,
+        'longitude': 4.85309666406198,
+        'zoom': 8
+      }
+    },
     'numOfBedrooms': 1,
     'numOfGuests': 2,
     'price': 80,
@@ -37,7 +51,14 @@ export const offers: Offer[] = [
     'isFavorite': true,
     'type': 'Apartment',
     'rating': 4.7,
-    'city': { 'name': 'Amsterdam' },
+    'city': {
+      'name': 'Amsterdam',
+      'location': {
+        'latitude': 52.3909553943508,
+        'longitude': 4.929309666406198,
+        'zoom': 8
+      }
+    },
     'numOfBedrooms': 2,
     'numOfGuests': 3,
     'price': 132,
@@ -51,7 +72,14 @@ export const offers: Offer[] = [
     'isFavorite': false,
     'type': 'Apartment',
     'rating': 4.5,
-    'city': { 'name': 'Amsterdam' },
+    'city': {
+      'name': 'Amsterdam',
+      'location': {
+        'latitude': 52.3809553943508,
+        'longitude': 4.939309666406198,
+        'zoom': 8
+      }
+    },
     'numOfBedrooms': 3,
     'numOfGuests': 4,
     'price': 180,
