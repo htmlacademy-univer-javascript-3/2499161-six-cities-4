@@ -7,14 +7,16 @@ import NotFoundScreen from '../pages/not-found-screen/not-found-screen';
 import OfferScreen from '../pages/offer/offer-screen';
 import PrivateRoute from '../private-route/private-route';
 import { Offer } from '../../types/offer';
+import { Review } from '../../types/review';
 
 
 type AppPageProps = {
   cardsNumber: number;
   offers: Offer[];
+  reviews: Review[];
 };
 
-export default function App({cardsNumber, offers} : AppPageProps) : JSX.Element {
+export default function App({cardsNumber, offers, reviews} : AppPageProps) : JSX.Element {
   const favorites = offers.filter((offer) => offer.isFavorite);
 
   return (
@@ -22,7 +24,7 @@ export default function App({cardsNumber, offers} : AppPageProps) : JSX.Element 
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainScreen cardsNumber={cardsNumber} offers={offers} />}
+          element={<MainScreen cardsNumber={cardsNumber} offers={offers} favorites={favorites}/>}
         />
         <Route
           path={AppRoute.Login}
@@ -38,7 +40,7 @@ export default function App({cardsNumber, offers} : AppPageProps) : JSX.Element 
         />
         <Route
           path={AppRoute.Offer}
-          element={<OfferScreen />}
+          element={<OfferScreen reviews={reviews} favorites={favorites}/>}
         />
         <Route
           path="*"
