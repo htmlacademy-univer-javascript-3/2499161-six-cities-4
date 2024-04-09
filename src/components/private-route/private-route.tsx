@@ -1,6 +1,6 @@
 import {Navigate} from 'react-router-dom';
-import { Status } from '../utils/constants';
-import { AppRoute } from '../utils/constants';
+import { Status } from '../../utils/constants';
+import { AppRoute } from '../../utils/constants';
 
 type PrivateRouteProps = {
   status: Status;

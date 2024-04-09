@@ -1,5 +1,5 @@
 import { Review } from '../../types/review';
-import { formatRating } from '../utils/formatRating';
+import { formatRating } from '../../utils/formatRating';
 
 
 type ReviewProps = {
