@@ -1,6 +1,6 @@
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
-import { formatRating } from '../formatRating';
+import { formatRating } from '../utils/formatRating';
 
 type CardProps = {
   offerInfo: Offer;

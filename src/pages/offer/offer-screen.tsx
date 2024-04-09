@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import CommentSubmissionForm from '../../comment-submission-form/comment-submission-form';
-import { Offer } from '../../../types/offer';
-import { Review } from '../../../types/review';
-import { offers } from '../../../mock/offers';
-import CardsList from '../../offers-list/offers-list';
-import ReviewsList from '../../review-list/review-list';
-import MapComponent from '../../map/map';
+import CommentSubmissionForm from '../../components/comment-submission-form/comment-submission-form';
+import { Offer } from '../../types/offer';
+import { Review } from '../../types/review';
+import { offers } from '../../mock/offers';
+import CardsList from '../../components/offers-list/offers-list';
+import ReviewsList from '../../components/review-list/review-list';
+import MapComponent from '../../components/map/map';
 
 type OfferScreenProps = {
   reviews: Review[];

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Offer } from '../../../types/offer';
-import OffersList from '../../offers-list/offers-list';
-import MapComponent from '../../map/map';
+import { Offer } from '../../types/offer';
+import OffersList from '../../components/offers-list/offers-list';
+import MapComponent from '../../components/map/map';
 
 type MainScreenProps = {
   cardsNumber: number;
