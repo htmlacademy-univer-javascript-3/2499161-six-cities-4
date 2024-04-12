@@ -5,7 +5,7 @@ import { Offer } from '../../types/offer';
 
 import useMap from '../hooks/use-map';
 import 'leaflet/dist/leaflet.css';
-import { URL_MARKER_DEFAULT } from '../constants';
+import { URL_MARKER_DEFAULT } from '../../utils/constants';
 
 type MapComponentProps = {
   city: City;

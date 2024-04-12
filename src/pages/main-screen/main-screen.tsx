@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom';
-import { Offer } from '../../../types/offer';
-import OffersList from '../../offers-list/offers-list';
-import MapComponent from '../../map/map';
+import { Offer } from '../../types/offer';
+import OffersList from '../../components/offers-list/offers-list';
+import MapComponent from '../../components/map/map';
 
 type MainScreenProps = {
   cardsNumber: number;
   offers: Offer[];
+  favorites: Offer[];
 };
 
-export default function MainScreen({cardsNumber, offers}: MainScreenProps): JSX.Element {
+export default function MainScreen({cardsNumber, offers, favorites}: MainScreenProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -26,14 +27,12 @@ export default function MainScreen({cardsNumber, offers}: MainScreenProps): JSX.
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
                     <Link to="/favorites">
-                      <span className="header__favorite-count">3</span>
+                      <span className="header__favorite-count">{favorites.length}</span>
                     </Link>
                   </Link>
                 </li>
                 <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
+                  <span className="header__signout">Sign out</span>
                 </li>
               </ul>
             </nav>
@@ -48,7 +47,7 @@ export default function MainScreen({cardsNumber, offers}: MainScreenProps): JSX.
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{cardsNumber} places to stay in Amsterdam</b>
-              <OffersList offers={offers} />
+              <OffersList offers={offers} listType = {'typical'}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">

@@ -1,7 +1,18 @@
 import { Link } from 'react-router-dom';
-import CommentSubmissionForm from '../../comment-submission-form/comment-submission-form';
+import CommentSubmissionForm from '../../components/comment-submission-form/comment-submission-form';
+import { Offer } from '../../types/offer';
+import { Review } from '../../types/review';
+import { offers } from '../../mock/offers';
+import CardsList from '../../components/offers-list/offers-list';
+import ReviewsList from '../../components/review-list/review-list';
+import MapComponent from '../../components/map/map';
 
-export default function OfferScreen(): JSX.Element {
+type OfferScreenProps = {
+  reviews: Review[];
+  favorites: Offer[];
+}
+
+export default function OfferScreen({reviews, favorites}: OfferScreenProps): JSX.Element {
   return(
     <div className="page">
       <header className="header">
@@ -20,7 +31,7 @@ export default function OfferScreen(): JSX.Element {
                     </div>
                     <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
                     <Link to="/favorites">
-                      <span className="header__favorite-count">3</span>
+                      <span className="header__favorite-count">{favorites.length}</span>
                     </Link>
                   </a>
                 </li>
@@ -155,36 +166,15 @@ export default function OfferScreen(): JSX.Element {
               </div>
             </div>
             <section className="offer__reviews reviews">
-              <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
-              <ul className="reviews__list">
-                <li className="reviews__item">
-                  <div className="reviews__user user">
-                    <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                      <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width="54" height="54" alt="Reviews avatar" />
-                    </div>
-                    <span className="reviews__user-name">
-                      Max
-                    </span>
-                  </div>
-                  <div className="reviews__info">
-                    <div className="reviews__rating rating">
-                      <div className="reviews__stars rating__stars">
-                        <span style={{width: '80%'}}></span>
-                        <span className="visually-hidden">Rating</span>
-                      </div>
-                    </div>
-                    <p className="reviews__text">
-                      A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                    </p>
-                    <time className="reviews__time" dateTime="2019-04-24">April 2019</time>
-                  </div>
-                </li>
-              </ul>
-              <CommentSubmissionForm/>
+              <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
+              <ReviewsList reviews={reviews}/>
+              <CommentSubmissionForm />
             </section>
           </div>
         </div>
-        <section className="offer__map map"></section>
+        <section className="offer__map map">
+          <MapComponent city={offers[0].city} points={offers.slice(0, 3)}/>
+        </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
@@ -288,6 +278,7 @@ export default function OfferScreen(): JSX.Element {
                 </div>
               </article>
             </div>
+            <CardsList offers={offers.slice(0, 3)} listType={'near'}/>
           </section>
         </div>
       </main>

@@ -3,7 +3,7 @@ import { Author } from './author';
 export type Review = {
   id: string;
   date: string;
-  user: Author;
+  author: Author;
   comment: string;
   rating: number;
 };

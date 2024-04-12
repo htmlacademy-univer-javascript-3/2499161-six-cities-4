@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Offer } from '../../../types/offer';
-import Card from '../../card/card';
+import { Offer } from '../../types/offer';
+import Card from '../../components/card/card';
 
 
 type FavoritesScreenProps = {
@@ -65,7 +65,7 @@ export default function FavoritesScreen({favorites}: FavoritesScreenProps): JSX.
                   </div>
                   <div className="favorites__places">
                     {favoritesMap[city].map((offer) => (
-                      <Card key={offer.id} offerInfo={offer} />
+                      <Card key={offer.id} offerInfo={offer} cardType={'typical'} />
                     ))}
                   </div>
                 </li>
