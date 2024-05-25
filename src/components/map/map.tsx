@@ -1,39 +1,48 @@
-import { useRef, useEffect } from 'react';
-import { Icon, Marker, layerGroup } from 'leaflet';
-import { City } from '../../types/city';
-import { Offer } from '../../types/offer';
+import {City, OfferType} from '../../types/offer.tsx';
+import {Icon, layerGroup, Marker} from 'leaflet';
+import {URL_MARKER_CURRENT, URL_MARKER_DEFAULT} from '../../mocks/cities.tsx';
+import {useEffect, useRef} from 'react';
+import useMap from './../hooks/use-map.tsx';
 
-import useMap from '../hooks/use-map';
-import 'leaflet/dist/leaflet.css';
-import { URL_MARKER_DEFAULT } from '../../utils/constants';
-
-type MapComponentProps = {
+type MapProps = {
   city: City;
-  points: Offer[];
+  points: OfferType[];
+  selectedPoint?: City;
 };
 
-const standartIcon = new Icon({
+const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [30, 30],
-  iconAnchor: [15, 30]
+  iconSize: [40, 40],
+  iconAnchor: [20, 40]
 });
 
-export default function MapComponent(props: MapComponentProps): JSX.Element {
-  const {city, points} = props;
+const currentCustomIcon = new Icon({
+  iconUrl: URL_MARKER_CURRENT,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40]
+});
+
+export default function Map(props: MapProps): JSX.Element {
+  const {city, points, selectedPoint} = props;
+
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
   useEffect(() => {
     if (map) {
       const markerLayer = layerGroup().addTo(map);
-      points.forEach((point) => {
+      points.map((e) => e.city).forEach((point) => {
         const marker = new Marker({
-          lat: point.city.location.latitude,
-          lng: point.city.location.longitude
+          lat: point.lat,
+          lng: point.lng,
         });
 
         marker
-          .setIcon(standartIcon)
+          .setIcon(
+            !!selectedPoint && point.name === selectedPoint.name
+              ? currentCustomIcon
+              : defaultCustomIcon
+          )
           .addTo(markerLayer);
       });
 
@@ -41,7 +50,7 @@ export default function MapComponent(props: MapComponentProps): JSX.Element {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, points]);
+  }, [map, points, selectedPoint]);
 
-  return <div style={{height: '100%'}} ref={mapRef}></div>;
+  return <div style={{height: '800px', width: '100%'}} ref={mapRef}></div>;
 }
