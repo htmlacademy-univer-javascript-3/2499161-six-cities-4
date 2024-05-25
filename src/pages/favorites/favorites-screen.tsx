@@ -1,47 +1,58 @@
-import { Link } from 'react-router-dom';
-import { Offer } from '../../types/offer';
-import Card from '../../components/card/card';
+import {OfferType} from '../../types/offer.tsx';
+import {Link} from 'react-router-dom';
+import Card from '../../components/card/card.tsx';
 
-
-type FavoritesScreenProps = {
-  favorites: Offer[];
+type FavoritesPageProp = {
+  favorites: OfferType[];
 };
 
-export default function FavoritesScreen({favorites}: FavoritesScreenProps): JSX.Element {
-  const favoritesMap = favorites.reduce((cityMap: Record<string, Offer[]>, offer: Offer) => {
-    const city = offer.city.name;
-    if (!cityMap[city]) {
-      cityMap[city] = [];
-    }
-    cityMap[city].push(offer);
-    return cityMap;
-  }, {});
-
+export default function Favourites({favorites}: FavoritesPageProp): JSX.Element {
+  const favoritesMap = favorites.reduce(
+    (acc: Record<string, OfferType[]>, place: OfferType) => {
+      const city = place.city.name;
+      if (city in acc) {
+        acc[city].push(place);
+      } else {
+        acc[city] = [place];
+      }
+      return acc;
+    },
+    {}
+  );
   return (
     <div className="page">
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <Link to="/" className="header__logo-link">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
+              <Link to='/' className="header__logo-link">
+                <img
+                  className="header__logo"
+                  src="img/logo.svg"
+                  alt="6 cities logo"
+                  width="81"
+                  height="41"
+                />
               </Link>
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
                 <li className="header__nav-item user">
-                  <Link to="/profile" className="header__nav-link header__nav-link--profile">
+                  <a
+                    className="header__nav-link header__nav-link--profile"
+                    href="#"
+                  >
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  </Link>
-                  <Link to="/favorites">
+                    <span className="header__user-name user__name">
+                    Oliver.conner@gmail.com
+                    </span>
                     <span className="header__favorite-count">3</span>
-                  </Link>
+                  </a>
                 </li>
                 <li className="header__nav-item">
-                  <Link to="/signout" className="header__nav-link">
+                  <a className="header__nav-link" href="#">
                     <span className="header__signout">Sign out</span>
-                  </Link>
+                  </a>
                 </li>
               </ul>
             </nav>
@@ -55,30 +66,95 @@ export default function FavoritesScreen({favorites}: FavoritesScreenProps): JSX.
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
               {Object.keys(favoritesMap).map((city) => (
-                <li key={city} className="favorites__locations-items">
+                <li className="favorites__locations-items" key={city}>
                   <div className="favorites__locations locations locations--current">
                     <div className="locations__item">
-                      <Link to={`/location/${city}`} className="locations__item-link">
+                      <a className="locations__item-link" href="#">
                         <span>{city}</span>
-                      </Link>
+                      </a>
                     </div>
                   </div>
                   <div className="favorites__places">
-                    {favoritesMap[city].map((offer) => (
-                      <Card key={offer.id} offerInfo={offer} cardType={'typical'} />
+                    {favoritesMap[city].map((place) => (
+                      <Card key={place.id} id={place.id} isPremium={place.isPremium} img={place.img} name={place.name} type={place.type} isBookmarked={place.isBookmarked}
+                        valuePerNight={place.valuePerNight} rating={place.rating}
+                      />
                     ))}
                   </div>
                 </li>
               ))}
+
+              <li className="favorites__locations-items">
+                <div className="favorites__locations locations locations--current">
+                  <div className="locations__item">
+                    <a className="locations__item-link" href="#">
+                      <span>Cologne</span>
+                    </a>
+                  </div>
+                </div>
+                <div className="favorites__places">
+                  <article className="favorites__card place-card">
+                    <div className="favorites__image-wrapper place-card__image-wrapper">
+                      <a href="#">
+                        <img
+                          className="place-card__image"
+                          src="img/apartment-small-04.jpg"
+                          width="150"
+                          height="110"
+                          alt="Place image"
+                        />
+                      </a>
+                    </div>
+                    <div className="favorites__card-info place-card__info">
+                      <div className="place-card__price-wrapper">
+                        <div className="place-card__price">
+                          <b className="place-card__price-value">&euro;180</b>
+                          <span className="place-card__price-text">
+                          &#47;&nbsp;night
+                          </span>
+                        </div>
+                        <button
+                          className="place-card__bookmark-button place-card__bookmark-button--active button"
+                          type="button"
+                        >
+                          <svg
+                            className="place-card__bookmark-icon"
+                            width="18"
+                            height="19"
+                          >
+                            <use xlinkHref="#icon-bookmark"></use>
+                          </svg>
+                          <span className="visually-hidden">In bookmarks</span>
+                        </button>
+                      </div>
+                      <div className="place-card__rating rating">
+                        <div className="place-card__stars rating__stars">
+                          <span style={{width: '100%'}}></span>
+                          <span className="visually-hidden">Rating</span>
+                        </div>
+                      </div>
+                      <h2 className="place-card__name">
+                        <a href="#">White castle</a>
+                      </h2>
+                      <p className="place-card__type">Apartment</p>
+                    </div>
+                  </article>
+                </div>
+              </li>
             </ul>
           </section>
         </div>
       </main>
-
       <footer className="footer container">
-        <Link to="/" className="footer__logo-link">
-          <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />
-        </Link>
+        <a className="footer__logo-link" href="main.html">
+          <img
+            className="footer__logo"
+            src="img/logo.svg"
+            alt="6 cities logo"
+            width="64"
+            height="33"
+          />
+        </a>
       </footer>
     </div>
   );

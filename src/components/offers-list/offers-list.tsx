@@ -1,19 +1,20 @@
-import { Offer } from '../../types/offer.ts';
-import Card from '../card/card.tsx';
+import Card, {Place} from '../card/card.tsx';
+
 
 type CardsListProps = {
-    offers: Offer[];
-    listType: 'typical' | 'near';
+  citiesCards: Place[];
 };
 
-export default function CardsList({ offers, listType }: CardsListProps) {
+function CardsList({citiesCards}: CardsListProps): JSX.Element {
   return (
-    <div
-      className={`${listType === 'typical' ? 'cities__places-list places__list tabs__content' : 'near-places__list places__list'}`}
-    >
-      {offers.map((offer) => (
-        <Card key={offer.id} offerInfo={offer} cardType={listType}/>
+    <div className="cities__places-list places__list tabs__content">
+      {citiesCards.map((place) => (
+        <Card key={place.id} id={place.id} isPremium={place.isPremium} img={place.img} name={place.name} type={place.type} isBookmarked={place.isBookmarked}
+          valuePerNight={place.valuePerNight} rating={place.rating} onListItemHover={place.onListItemHover}
+        />
       ))}
     </div>
   );
 }
+
+export default CardsList;

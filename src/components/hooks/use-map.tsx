@@ -1,35 +1,38 @@
-import { useEffect, useState, MutableRefObject, useRef } from 'react';
-import { Map, TileLayer } from 'leaflet';
-import { City } from '../../types/city';
+import {useEffect, useState, MutableRefObject, useRef} from 'react';
+import {Map, TileLayer} from 'leaflet';
+import {City} from '../../types/offer.tsx';
 
-export default function useLeafletMap(
-  mapContainerRef: MutableRefObject<HTMLElement | null>,
-  selectedCity: City
+export default function useMap(
+  mapRef: MutableRefObject<HTMLElement | null>,
+  city: City
 ): Map | null {
-  const [leafletMap, setLeafletMap] = useState<Map | null>(null);
-  const hasMapBeenInitialized = useRef<boolean>(false);
+  const [map, setMap] = useState<Map | null>(null);
+  const isRenderedRef = useRef<boolean>(false);
 
   useEffect(() => {
-    if (mapContainerRef.current && !hasMapBeenInitialized.current) {
-      const mapInstance = new Map(mapContainerRef.current, {
+    if (!!mapRef.current && !isRenderedRef.current) {
+      const instance = new Map(mapRef.current, {
         center: {
-          lat: selectedCity.location.latitude,
-          lng: selectedCity.location.longitude
+          lat: city.lat,
+          lng: city.lng
         },
-        zoom: selectedCity.location.zoom
+        zoom: 10
       });
 
-      const baseLayer = new TileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+      const layer = new TileLayer(
+        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
         {
-          attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         }
       );
 
-      mapInstance.addLayer(baseLayer);
-      setLeafletMap(mapInstance);
-      hasMapBeenInitialized.current = true;
-    }
-  }, [mapContainerRef, selectedCity.location]);
+      instance.addLayer(layer);
 
-  return leafletMap;
+      setMap(instance);
+      isRenderedRef.current = true;
+    }
+  }, [mapRef, city]);
+
+  return map;
 }

@@ -1,51 +1,28 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import MainScreen from '../../pages/main-screen/main-screen';
-import { AppRoute, Status } from '../../utils/constants';
-import FavoritesScreen from '../../pages/favorites/favorites-screen';
-import LoginScreen from '../../pages/login-screen/login-screen';
-import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
-import OfferScreen from '../../pages/offer/offer-screen';
-import PrivateRoute from '../private-route/private-route';
-import { Offer } from '../../types/offer';
-import { Review } from '../../types/review';
+import Main from '../../pages/main-screen/main-screen.tsx';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import NotFoundPage from '../../error/NotFound.tsx';
+import Offer from '../../pages/offer/offer-screen.tsx';
+import Login from '../../pages/login-screen/login-screen.tsx';
+import Favourites from '../../pages/favorites/favorites-screen.tsx';
+import PrivateRoute from '../private-route/private-route.tsx';
+import {OfferType} from '../../types/offer.tsx';
 
+type AppProps = {
+  offers: OfferType[];
+}
 
-type AppPageProps = {
-  cardsNumber: number;
-  offers: Offer[];
-  reviews: Review[];
-};
-
-export default function App({cardsNumber, offers, reviews} : AppPageProps) : JSX.Element {
-  const favorites = offers.filter((offer) => offer.isFavorite);
-
+export default function App ({offers}: AppProps){
+  const favorites = offers.filter((o) => o.isFavorite);
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path={AppRoute.Main}
-          element={<MainScreen cardsNumber={cardsNumber} offers={offers} favorites={favorites}/>}
-        />
-        <Route
-          path={AppRoute.Login}
-          element={<LoginScreen />}
-        />
-        <Route
-          path={AppRoute.Favorites}
-          element={
-            <PrivateRoute status={Status.Auth}>
-              <FavoritesScreen favorites={favorites}/>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path={AppRoute.Offer}
-          element={<OfferScreen reviews={reviews} favorites={favorites}/>}
-        />
-        <Route
-          path="*"
-          element={<NotFoundScreen />}
-        />
+        <Route path="/" element={<Main />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/favorites" element={<PrivateRoute><Favourites favorites={favorites}/></PrivateRoute>} />
+        <Route path="offer/">
+          <Route path=":id" element={<Offer offers={offers}/>} />
+        </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );
