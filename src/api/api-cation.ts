@@ -3,7 +3,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, State} from '../types/state';
 import {updateOffers, setOffersDataLoadingStatus, updateCurrentOffer, updateCurrentReviews,
   setUserDataLoadingStatus, updateUserLogin, requireAuthorization} from '../store/action';
-import {APIRoutes, AuthData, AuthorizationStatus, FullOffer, OfferType, UserData} from '../types/offer.ts';
+import {APIRoutes, AuthData, AuthorizationStatus, FullOffer, OfferType, UserData, ReviewData} from '../types/offer.ts';
 import {dropToken, saveToken} from '../types/token.ts';
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
@@ -95,6 +95,19 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     await api.delete(APIRoutes.UserLogout);
     dropToken();
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    dispatch(setUserDataLoadingStatus(false));
+  },
+);
+
+export const postReviewAction = createAsyncThunk<void, ReviewData, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'user/login',
+  async ({id, review, rating}, {dispatch, extra: api}) => {
+    dispatch(setUserDataLoadingStatus(true));
+    await api.post<UserData>(APIRoutes.Comments.concat(`/${id}`), {review, rating});
     dispatch(setUserDataLoadingStatus(false));
   },
 );
