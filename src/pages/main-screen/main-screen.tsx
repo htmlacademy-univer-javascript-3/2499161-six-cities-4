@@ -1,12 +1,14 @@
 import {Link} from 'react-router-dom';
 import {City} from '../../types/offer.tsx';
 import CardsList from '../../components/offers-list/offers-list.tsx';
-import {amsterdam} from '../../mocks/cities.tsx';
+import {amsterdam, filters} from '../../mocks/cities.tsx';
+import Filters from '../../components/filter/filter.tsx';
 import {useState} from 'react';
 import Map from '../../components/map/map.tsx';
 import {store} from '../../store/index.ts';
 import {useAppDispatch} from '../../hooks/index.ts';
 import {updateOffers} from '../../store/action.ts';
+
 
 export default function Main () {
   const [currentState, setCurrentState] = useState(store.getState());
@@ -22,6 +24,10 @@ export default function Main () {
   const handleListItemHover = (listItemName: string) => {
     const currentPoint = points.find((point) => point.name === listItemName);
     setSelectedPoint(currentPoint);
+  };
+  const [sortType, setSortType] = useState(filters.POPULAR);
+  const handleSort = (newSortType: string) => {
+    setSortType(newSortType);
   };
   return (
     <div className="page page--gray page--main">
@@ -48,7 +54,7 @@ export default function Main () {
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__user-name user__name">
-                  Oliver.conner@gmail.com
+                    Oliver.conner@gmail.com
                     </span>
                     <Link to='/favorites'>
                       <span className="header__favorite-count">3</span>
@@ -145,32 +151,7 @@ export default function Main () {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{currentState.offers.length.toString()} places to stay in {currentState.city}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-              Popular
-                  <svg className="places__sorting-arrow" width={7} height={4}>
-                    <use xlinkHref="#icon-arrow-select"/>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li
-                    className="places__option places__option--active"
-                    tabIndex={0}
-                  >
-                    Popular
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                    Price: low to high
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                    Price: high to low
-                  </li>
-                  <li className="places__option" tabIndex={0}>
-                    Top rated first
-                  </li>
-                </ul>
-              </form>
+              <Filters handleSort={handleSort}/>
               <CardsList citiesCards={currentState.offers.map((item) => ({
                 id: item.id,
                 valuePerNight: item.valuePerNight,
@@ -180,8 +161,9 @@ export default function Main () {
                 rating: item.rating,
                 type: item.type,
                 name: item.name,
-                onListItemHover: handleListItemHover
+                onListItemHover: handleListItemHover,
               }))}
+              sortType={sortType}
               />
             </section>
             <div className="cities__right-section">
