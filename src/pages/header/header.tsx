@@ -3,17 +3,19 @@ import Spinner from '../loading-screen/loading-screen.tsx';
 import {logoutAction} from '../../api/api-cation.ts';
 import {updateUserLogin} from '../../store/action.ts';
 import {AuthorizationStatus} from '../../types/offer.ts';
+import {MouseEvent} from 'react';
 
 export default function Header(): JSX.Element {
-  const isAuthorized = useAppSelector((state) => state.authorizationStatus);
-  const isUserDataLoading = useAppSelector((state) => state.isUserDataLoading);
-  const userLogin = useAppSelector((state) => state.userLogin);
+  const isAuthorized = useAppSelector((state) => state.user.authorizationStatus);
+  const isUserDataLoading = useAppSelector((state) => state.user.isUserDataLoading);
+  const userLogin = useAppSelector((state) => state.user.userLogin);
+  const favoritesCounter = useAppSelector((state) => state.favorites.favoritesCounter);
   const dispatch = useAppDispatch();
   if (isUserDataLoading) {
     return <Spinner />;
   }
 
-  const handleLogout = (evt: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleLogout = (evt: MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
     dispatch(logoutAction());
     dispatch(updateUserLogin(null));
@@ -28,11 +30,11 @@ export default function Header(): JSX.Element {
       </li>
     );
     userSection = (
-      <a className="headernav-link headernav-link--profile" href="#">
+      <a className="headernav-link headernav-link--profile" href="/favorites">
         <div className="headeravatar-wrapper useravatar-wrapper">
         </div>
         <span className="headeruser-name username">{userLogin}</span>
-        <span className="header__favorite-count">30</span>
+        <span className="header__favorite-count">{favoritesCounter}</span>
       </a>
     );
   } else {
