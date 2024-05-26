@@ -5,7 +5,7 @@ import {useState} from 'react';
 import Map from '../../components/map/map.tsx';
 import {store} from '../../store/index.ts';
 import Filters from '../../components/filter/filter.tsx';
-import CitiesList from '../../cities-list/cities-list.tsx';
+import CitiesList from '../../components/cities-list/cities-list.tsx';
 import Header from '../header/header.tsx';
 import EmptyOffer from '../../components/main-empty/main-empty.tsx';
 

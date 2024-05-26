@@ -1,7 +1,7 @@
-import {useAppDispatch} from '../hooks';
-import {updateCity} from '../store/action.ts';
-import {store} from '../store';
-import { InitialStateOffer } from '../types/offer.ts';
+import {useAppDispatch} from '../../hooks/index.ts';
+import {updateCity} from '../../store/action.ts';
+import {store} from '../../store/index.ts';
+import { InitialStateOffer } from '../../types/offer.ts';
 
 type CityProps = {
   city: string;
