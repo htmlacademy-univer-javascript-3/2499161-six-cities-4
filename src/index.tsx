@@ -5,7 +5,7 @@ import App from './components/app/app.tsx';
 //import {offers} from './mocks/offers.ts';
 import {Provider} from 'react-redux';
 import {store} from './store';
-import {fetchFavorites, checkAuthAction, fetchOffersAction} from './api/api-cation.ts';
+import {fetchFavorites, checkAuthAction, fetchOffersAction} from './api/api-action.ts';
 
 store.dispatch(fetchOffersAction());
 store.dispatch(checkAuthAction());

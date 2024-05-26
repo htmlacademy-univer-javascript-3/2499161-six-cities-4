@@ -1,8 +1,8 @@
 import Main from '../../pages/main-screen/main-screen.tsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Offer from '../../pages/offer/offer-screen.tsx';
+import Offer from '../../pages/offer-screen/offer-screen.tsx';
 import Login from '../../pages/login-screen/login-screen.tsx';
-import Favorites from '../../pages/favorites/favorites-screen.tsx';
+import Favorites from '../../pages/favorites-screen/favorites-screen.tsx';
 import PrivateRoute from '../private-route/private-route.tsx';
 import {useAppSelector} from '../../hooks/index.ts';
 import NotFoundPage from '../../error/NotFound.tsx';

@@ -1,6 +1,6 @@
 import {useAppDispatch, useAppSelector} from '../../hooks/index.ts';
 import Spinner from '../loading-screen/loading-screen.tsx';
-import {logoutAction} from '../../api/api-cation.ts';
+import {logoutAction} from '../../api/api-action.ts';
 import {updateUserLogin} from '../../store/action.ts';
 import {AuthorizationStatus} from '../../types/offer.ts';
 import {MouseEvent} from 'react';

@@ -1,11 +1,11 @@
 import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {AppDispatch, State} from '../types/state';
+import {AppDispatch, State} from '../types/state.ts';
 import {updateOffers, setOffersDataLoadingStatus, updateCurrentOffer, updateCurrentReviews,
-  setUserDataLoadingStatus, updateUserLogin, requireAuthorization, setFavoritesDataLoadingStatus,updateFavorites} from '../store/action';
+  setUserDataLoadingStatus, updateUserLogin, requireAuthorization, setFavoritesDataLoadingStatus,updateFavorites} from '../store/action.ts';
 import {APIRoutes, AuthData, AuthorizationStatus, FullOffer, OfferType, UserData, ReviewData, Review} from '../types/offer.ts';
 import {dropToken, saveToken} from '../types/token.ts';
-import {FavoritesData} from '../consts/favorites-consts.ts';
+import { FavoritesData } from '../const/const.tsx';
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -14,8 +14,8 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
 }>(
   'data/fetchOffers',
   async (_arg, {dispatch, extra: api}) => {
-    const {data} = await api.get<OfferType[]>('/offers');
     dispatch(setOffersDataLoadingStatus(true));
+    const {data} = await api.get<OfferType[]>(APIRoutes.Offers);
     dispatch(updateOffers(data));
     dispatch(setOffersDataLoadingStatus(false));
   },
@@ -28,8 +28,8 @@ export const fetchSingleOfferAction = createAsyncThunk<void, { id: string | unde
 }>(
   'data/fetchSingleOffer',
   async ({ id }, {dispatch, extra: api}) => {
-    const {data} = await api.get<FullOffer>(`/offers/${id}`);
     dispatch(setOffersDataLoadingStatus(true));
+    const {data} = await api.get<FullOffer>(APIRoutes.Offers.concat(`/${id}`));
     dispatch(updateCurrentOffer(data));
     dispatch(setOffersDataLoadingStatus(false));
   },
@@ -43,7 +43,7 @@ export const fetchCommentsAction = createAsyncThunk<void, { id: string | undefin
   'data/fetchComments',
   async ({ id }, {dispatch, extra: api}) => {
     dispatch(setOffersDataLoadingStatus(true));
-    const {data} = await api.get<Review[]>(`/reviews/${id}`);
+    const { data } = await api.get<Review[]>(`${APIRoutes.Review}/${id}`);
     dispatch(updateCurrentReviews(data));
     dispatch(setOffersDataLoadingStatus(false));
   },
@@ -99,18 +99,18 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     dispatch(setUserDataLoadingStatus(false));
   },
 );
-
 export const postReviewAction = createAsyncThunk<void, ReviewData, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/postReviewAction',
-  async ({id, review, rating}, {dispatch, extra: api}) => {
+  'data/postCommentAction',
+  async ({ id, comment, rating }, { dispatch, extra: api }) => {
     dispatch(setUserDataLoadingStatus(true));
-    await api.post<UserData>(APIRoutes.Comments.concat(`/${id}`), {review, rating});
+    const url = `${APIRoutes.Review}/${id}`;
+    await api.post<UserData>(url, { comment, rating });
     dispatch(setUserDataLoadingStatus(false));
-  },
+  }
 );
 
 export const fetchFavorites = createAsyncThunk<void, undefined, {
@@ -122,25 +122,25 @@ export const fetchFavorites = createAsyncThunk<void, undefined, {
   async (_arg, {dispatch, extra: api}) => {
     try {
       dispatch(setFavoritesDataLoadingStatus(true));
-      const { data } = await api.get<OfferType[]>(APIRoutes.Favourite);
+      const { data } = await api.get<OfferType[]>(APIRoutes.Favorite);
       dispatch(updateFavorites(data));
     } catch {
       dispatch(updateFavorites([]));
     } finally {
-      dispatch(setUserDataLoadingStatus(false));
+      dispatch(setFavoritesDataLoadingStatus(false));
     }
   },
 );
 
-export const updateFavourite = createAsyncThunk<void, FavoritesData, {
+export const updateFavorite = createAsyncThunk<void, FavoritesData, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
-  'favorites/updateFavourite',
+  'favorites/updateFavorite',
   async ({id, status}, {dispatch, extra: api}) => {
     dispatch(setFavoritesDataLoadingStatus(true));
-    await api.post<UserData>(APIRoutes.Favourite.concat(`/${id}/${status}`));
+    await api.post<UserData>(APIRoutes.Favorite.concat(`/${id}/${status}`));
     dispatch(setFavoritesDataLoadingStatus(false));
   },
 );
