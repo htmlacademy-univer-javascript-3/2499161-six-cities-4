@@ -1,6 +1,7 @@
 import {City, Point} from '../../types/offer.tsx';
 import {Icon, layerGroup, Marker} from 'leaflet';
-import {URL_MARKER_CURRENT, URL_MARKER_DEFAULT} from '../../const/const.tsx';
+import pin from '../../../markup/img/pin.svg';
+import activePin from '../../../markup/img/pin-active.svg';
 import {useEffect, useRef} from 'react';
 import useMap from './../hooks/use-map.tsx';
 
@@ -14,13 +15,13 @@ type MapProps = {
 };
 
 const defaultCustomIcon = new Icon({
-  iconUrl: URL_MARKER_DEFAULT,
+  iconUrl: pin,
   iconSize: [40, 40],
   iconAnchor: [20, 40]
 });
 
 const currentCustomIcon = new Icon({
-  iconUrl: URL_MARKER_CURRENT,
+  iconUrl: activePin,
   iconSize: [40, 40],
   iconAnchor: [20, 40]
 });
