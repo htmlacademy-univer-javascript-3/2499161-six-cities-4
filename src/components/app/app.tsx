@@ -5,12 +5,12 @@ import Login from '../../pages/login-screen/login-screen.tsx';
 import Favorites from '../../pages/favorites-screen/favorites-screen.tsx';
 import PrivateRoute from '../private-route/private-route.tsx';
 import {useAppSelector} from '../../hooks/index.ts';
-import NotFoundPage from '../../error/NotFound.tsx';
+import NotFoundPage from '../../error/not-found.tsx';
 import Spinner from '../../pages/loading-screen/loading-screen.tsx';
 
 function App(): JSX.Element {
   const isOffersDataLoading = useAppSelector((state) => state.offers.isOffersDataLoading);
-  const offers = useAppSelector((state) => state.offers.cityOffers);
+  const offers = useAppSelector((state) => state.offers.offers);
   if (isOffersDataLoading) {
     return (
       <Spinner />
