@@ -5,7 +5,7 @@ import { FavoritesStatus } from '../../const/const.tsx';
 import {updateFavoritesCounter} from '../../store/action.ts';
 import {AuthorizationStatus, Place} from '../../types/offer.ts';
 import ScrollTop from '../utils/scroll-top.tsx';
-import {NavLink} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import {filters, rareCard} from '../../const/const.tsx';
 
 type FavoriteCardListProps = {
@@ -55,9 +55,9 @@ const FavoriteCard = (props: Place) => {
   return (
     <article className="favorites__card place-card" onMouseOver={handleMouseOver}>
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <Link to="/">
           <img className="place-card__image" src={`${props.image}`} width="150" height="110" alt="Place image" />
-        </a>
+        </Link>
       </div>
       <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">
