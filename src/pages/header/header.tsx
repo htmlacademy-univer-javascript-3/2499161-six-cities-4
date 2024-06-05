@@ -4,6 +4,7 @@ import {logoutAction} from '../../api/api-action.ts';
 import {updateUserLogin} from '../../store/action.ts';
 import {AuthorizationStatus} from '../../types/offer.ts';
 import {MouseEvent} from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Header(): JSX.Element {
   const isAuthorized = useAppSelector((state) => state.user.authorizationStatus);
@@ -26,25 +27,25 @@ export default function Header(): JSX.Element {
   if (isAuthorized === AuthorizationStatus.Auth) {
     loginSection = (
       <li className="header__nav-item">
-        <a href="/login" onClick={handleLogout} >Sign out</a>
+        <Link to="/login" onClick={handleLogout} >Sign out</Link>
       </li>
     );
     userSection = (
-      <a className="headernav-link headernav-link--profile" href="/favorites">
+      <Link className="headernav-link headernav-link--profile" to="/favorites">
         <div className="headeravatar-wrapper useravatar-wrapper">
         </div>
         <span className="headeruser-name username">{userLogin}</span>
         <span className="header__favorite-count">{favoritesCounter}</span>
-      </a>
+      </Link>
     );
   } else {
     loginSection = (
       <li className="header__nav-item">
-        <a href="/login" >Sign in</a>
+        <Link to="/login" >Sign in</Link>
       </li>
     );
     userSection = (
-      <a className="headernav-link headernav-link--profile" href="#"></a>
+      <Link className="headernav-link headernav-link--profile" to="/"></Link>
     );
   }
 
@@ -53,9 +54,9 @@ export default function Header(): JSX.Element {
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
-            <a className="headerlogo-link headerlogo-link--active" href="/">
+            <Link className="headerlogo-link headerlogo-link--active" to="/">
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-            </a>
+            </Link>
           </div>
           <nav className="header__nav">
             <ul className="header__nav-list">

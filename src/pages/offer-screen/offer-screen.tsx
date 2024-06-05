@@ -1,10 +1,10 @@
 import {useParams} from 'react-router-dom';
-import {AuthorizationStatus, OfferType} from '../../types/offer.ts';
+import {APIRoutes, AuthorizationStatus, OfferType} from '../../types/offer.ts';
 import NotFoundPage from '../../error/not-found.tsx';
 import ReviewsList from '../../components/review-list/review-list.tsx';
 import Map from '../../components/map/map.tsx';
 import {useAppDispatch, useAppSelector} from '../../hooks/index.ts';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {fetchSingleOfferAction, fetchCommentsAction, updateFavorite} from '../../api/api-action.ts';
 import {CardsListMemo} from '../../components/offers-list/offers-list.tsx';
 import {filters, rareOffer} from '../../const/const.tsx';
@@ -13,12 +13,14 @@ import Header from '../header/header.tsx';
 import ReviewForm from '../../components/review-form/review-form.tsx';
 import {setOffersDataLoadingStatus, updateFavoritesCounter} from '../../store/action.ts';
 import { FavoritesStatus } from '../../const/const.tsx';
+import { api } from '../../store/index.ts';
 
 type OffersProps = {
   offers: OfferType[];
 }
 
 export default function Offer ({offers}: OffersProps) {
+  const [nearbyOffers, setNearbyOffers] = useState<OfferType[]>([]);
   const isAuthorized = useAppSelector((state) => state.user.authorizationStatus);
   const favoritesCounter = useAppSelector((state) => state.favorites.favoritesCounter);
   const currentOffer = useAppSelector((state) => state.offers.currentOffer);
@@ -26,6 +28,16 @@ export default function Offer ({offers}: OffersProps) {
   const params = useParams();
   const offer = offers.find((o) => o.id === params.id);
   const dispatch = useAppDispatch();
+  const fetchData = useCallback(async () => {
+    try {
+      const response = await api.get<OfferType[]>(`${APIRoutes.Offers}/${params.id}/nearby`);
+      setNearbyOffers(response.data.slice(0, 3));
+    } catch (err) { /* empty */ }
+  },[params]);
+
+  useEffect(() => {
+    fetchData();
+  },[fetchData, params]);
   useEffect(() => {
     if (offer?.id) {
       dispatch(fetchSingleOfferAction({id: offer.id}));
@@ -51,9 +63,7 @@ export default function Offer ({offers}: OffersProps) {
       dispatch(updateFavoritesCounter(favoritesCounter + 1));
     }
   };
-  const otherOffers = offers.filter((e) => e !== offer);
-  const neighbourhoodThreeOffers = otherOffers.slice(0, 3);
-  let plusCurrentOffer = neighbourhoodThreeOffers;
+  let plusCurrentOffer = nearbyOffers;
   if (offer) {
     plusCurrentOffer = plusCurrentOffer.concat(offer);
   }
@@ -171,7 +181,7 @@ export default function Offer ({offers}: OffersProps) {
             Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
-              <CardsListMemo citiesCards={neighbourhoodThreeOffers.map((item) => ({...item, image: item.previewImage, roomName: item.title, roomType: item.type}))} sortType={filters.TOP_RATED}/>
+              <CardsListMemo citiesCards={nearbyOffers.map((item) => ({...item, image: item.previewImage, roomName: item.title, roomType: item.type}))} sortType={filters.TOP_RATED}/>
             </div>
           </section>
         </div>

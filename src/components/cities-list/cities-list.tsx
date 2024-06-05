@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import {useAppDispatch} from '../../hooks/index.ts';
 import {updateCity} from '../../store/action.ts';
 import {store} from '../../store/index.ts';
@@ -22,7 +23,7 @@ function City ({ city, currentCity, setCurrentCity }: CityProps): JSX.Element {
   const dispatch = useAppDispatch();
   return (
     <li className="locations__item">
-      <a
+      <Link to="#"
         className={currentCity === city ? 'locations__item-link tabs__item tabs__item--active' : 'locations__item-link tabs__item'}
         onClick={() => {
           dispatch(updateCity(city));
@@ -30,7 +31,7 @@ function City ({ city, currentCity, setCurrentCity }: CityProps): JSX.Element {
         }}
       >
         <span>{city}</span>
-      </a>
+      </Link>
     </li>
   );
 }

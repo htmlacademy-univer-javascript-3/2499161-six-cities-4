@@ -6,6 +6,7 @@ import {fetchFavorites} from '../../api/api-action.ts';
 import {constCities, filters} from '../../const/const.tsx';
 import FavoritesCardList from '../../components/favorite-list/favorite-list.tsx';
 import EmptyFavorites from '../../components/empty-favorites/empty-favorites.tsx';
+import { Link } from 'react-router-dom';
 
 export default function Favourites() {
   const dispatch = useAppDispatch();
@@ -40,9 +41,9 @@ export default function Favourites() {
                   <li className="favorites__locations-items" key={item.city}>
                     <div className="favorites__locations locations locations--current">
                       <div className="locations__item">
-                        <a className="locations__item-link" href="#">
+                        <Link className="locations__item-link" to="/">
                           <span>{item.city}</span>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                     <div className="favorites__places">
@@ -64,7 +65,7 @@ export default function Favourites() {
         </div>
       </main>
       <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
+        <Link className="footer__logo-link" to="/">
           <img
             className="footer__logo"
             src="img/logo.svg"
@@ -72,7 +73,7 @@ export default function Favourites() {
             width="64"
             height="33"
           />
-        </a>
+        </Link>
       </footer>
     </div>
   );

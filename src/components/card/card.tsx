@@ -1,5 +1,5 @@
 import ScrollTop from './../utils/scroll-top';
-import {NavLink} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import {memo, useState} from 'react';
 import {AuthorizationStatus, Place} from '../../types/offer.ts';
 import {useAppDispatch, useAppSelector} from '../../hooks';
@@ -56,7 +56,7 @@ function Card(place: Place): JSX.Element {
           <span>Premium</span>
         </div>)}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <Link to={`/offer/${place.id}`}>
           <img
             className="place-card__image"
             src={place.image}
@@ -64,7 +64,7 @@ function Card(place: Place): JSX.Element {
             height={200}
             alt="Place image"
           />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -85,4 +85,4 @@ function Card(place: Place): JSX.Element {
   );
 }
 
-export const CardMemo = memo(Card);
+export const CardMemo = memo(Card, (prev, next) => prev.id === next.id);
